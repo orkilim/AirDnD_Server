@@ -7,6 +7,8 @@ var cors = require('cors');
 const bodyParser = require('body-parser');
 app.use(cors());
 
+require('./db')
+
 app.use('/', express.static('./public'));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -21,10 +23,10 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
     
-const womanController = require("./routes/woman");
+const profilesController = require("./routes/profile");
 
     
-app.use("/woman", womanController);
+app.use("/profile", profilesController);
 
 app.use(bodyParser.json());
 
