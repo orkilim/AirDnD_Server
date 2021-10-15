@@ -39,50 +39,73 @@ module.exports = {
     async getGuardsFromDB(req, res, next) {
         const { phoneNumber = null } = req.query;
         const result = await Woman.findOne({ phoneNumber });
-    
+
         const { guards } = result
         const data = guards.map((curr) => ({
             name: curr.name,
             phone: curr.phoneNumber,
-        }))  
-        
-        if (data) {
-          console.log(data);
-          res.json(data);
-        } else {
-          res.status(404).send('not found or already exist');
-        }
-      },
+        }))
 
-    async getAll(req,res,next){
-        
+        if (data) {
+            console.log(data);
+            res.json(data);
+        } else {
+            res.status(404).send('not found or already exist');
+        }
+    },
+
+    async getAll(req, res, next) {
+
         try {
-            const result=await Profile.find()
-            if(result){
+            const result = await Profile.find()
+            if (result) {
                 console.log("everything's good")
                 res.status(200).send(JSON.stringify(result))
             }
         } catch (error) {
-            if(error)
-            {
-                res.status(400).send("problem with getAll is: "+error)
+            if (error) {
+                res.status(400).send("problem with getAll is: " + error)
             }
         }
-        
+
     },
 
     async addProfile(req, res, next) {
         try {
-            const { name, address = "", allergies = "none", car, diet = "omnivore", days = [false,false,false,false,false,true,true] } = req.body
-            const profile = new Profile({ name, address,allergies, car, diet, days })
-            const result = await profile.save()
-            if (result) {
-                console.log("successfully saved to DB")
-                res.status(200).send("profile saved to db successfully")
+            const { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
+            const name1 = name.toLowerCase()
+            const profile = new Profile({ name1, address, allergies, car, diet, days })
+
+            try {
+                const result = await Profile.findOne({ name1 });
+                if (result) {
+                    const myObj={
+                        code:1,
+                        msg:"user with that name already exists- change name or log to the existing"
+                    }
+                    res.status(200).send(myObj)
+                }
+                else {
+                    const result = await profile.save()
+                    if (result) {
+                        console.log("successfully saved to DB")
+                        const myObj={
+                            code:0,
+                            msg:"saving profile or profile changes to DB successful"
+                        }
+                        res.status(200).send(myObj)
+                    }
+                }
+
+            } catch (error) {
+                if (error)
+                    res.status(500).send("problem with findOne of mongoose in addProfile is: " + error)
             }
+
+
         } catch (error) {
             if (error)
-                res.status(400).send("problem with addProfile is: " + error)
+                res.status(500).send("problem with addProfile is: " + error)
         }
     },
 
