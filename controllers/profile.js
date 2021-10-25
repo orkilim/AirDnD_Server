@@ -71,16 +71,16 @@ module.exports = {
     },
 
     async addProfile(req, res, next) {
-        let errorArr=[]
+        let errorNum=503
         try {
             let { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
             console.log(req.body)
             name=name.toLowerCase()
-            errorArr.push("a")
+            errorNum++
             const profile = new Profile({ name, address, allergies, car, diet, days })
-            errorArr.push("b")
+            errorNum++
             try {
-                errorArr.push("c")
+                errorNum++
                 const result = await Profile.findOne({ name:name });
                 if (result) {
                     const myObj={
