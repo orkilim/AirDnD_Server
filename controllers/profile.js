@@ -71,13 +71,16 @@ module.exports = {
     },
 
     async addProfile(req, res, next) {
+        let errorArr=[]
         try {
             let { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
             console.log(req.body)
             name=name.toLowerCase()
+            errorArr.push("a")
             const profile = new Profile({ name, address, allergies, car, diet, days })
-
+            errorArr.push("b")
             try {
+                errorArr.push("c")
                 const result = await Profile.findOne({ name:name });
                 if (result) {
                     const myObj={
@@ -106,7 +109,10 @@ module.exports = {
 
         } catch (error) {
             if (error)
-                res.status(503).send("problem with addProfile is: " + error)
+            {
+                console.log("error is: ",error)
+                res.status(503).send("problem with addProfile is: " + error+errorArr)
+            }
         }
     },
 
