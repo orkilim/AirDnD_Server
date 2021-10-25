@@ -86,7 +86,7 @@ module.exports = {
                     res.status(200).send(myObj)
                 }
                 else {
-                    const result = await profile.save()
+                    const result = await Profile.save()
                     if (result) {
                         console.log("successfully saved to DB")
                         const myObj={
