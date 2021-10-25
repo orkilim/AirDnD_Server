@@ -50,7 +50,7 @@ module.exports = {
             console.log(data);
             res.json(data);
         } else {
-            res.status(404).send('not found or already exist');
+            res.status(500).send('not found or already exist');
         }
     },
 
@@ -64,7 +64,7 @@ module.exports = {
             }
         } catch (error) {
             if (error) {
-                res.status(400).send("problem with getAll is: " + error)
+                res.status(501).send("problem with getAll is: " + error)
             }
         }
 
@@ -99,13 +99,13 @@ module.exports = {
 
             } catch (error) {
                 if (error)
-                    res.status(500).send("problem with findOne of mongoose in addProfile is: " + error)
+                    res.status(502).send("problem with findOne of mongoose in addProfile is: " + error)
             }
 
 
         } catch (error) {
             if (error)
-                res.status(500).send("problem with addProfile is: " + error)
+                res.status(503).send("problem with addProfile is: " + error)
         }
     },
 
