@@ -72,12 +72,13 @@ module.exports = {
 
     async addProfile(req, res, next) {
         try {
-            const { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
-            const name1 = name.toLowerCase()
-            const profile = new Profile({ name1, address, allergies, car, diet, days })
+            let { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
+            console.log(req.body)
+            name=name.toLowerCase()
+            const profile = new Profile({ name, address, allergies, car, diet, days })
 
             try {
-                const result = await Profile.findOne({ name1 });
+                const result = await Profile.findOne({ name:name });
                 if (result) {
                     const myObj={
                         code:1,
@@ -86,7 +87,7 @@ module.exports = {
                     res.status(200).send(myObj)
                 }
                 else {
-                    const result = await Profile.save()
+                    const result = await profile.save()
                     if (result) {
                         console.log("successfully saved to DB")
                         const myObj={
