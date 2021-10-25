@@ -111,7 +111,7 @@ module.exports = {
             if (error)
             {
                 console.log("error is: ",error)
-                res.status(503).send("problem with addProfile is: " + error+errorArr)
+                res.status(errorNum).send("problem with addProfile is: " + error+errorArr)
             }
         }
     },
