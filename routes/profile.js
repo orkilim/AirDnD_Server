@@ -9,7 +9,7 @@ router.post('/add', profilesController.addProfile);
 router.get('/getAll', profilesController.getAll);
 
 //router.post('/signup', womanController.signup);
-//router.post('/login', womanController.login);
+router.post('/login', profilesController.login);
 
 
 module.exports = router;

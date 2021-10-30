@@ -23,10 +23,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
     
-const profilesController = require("./routes/profile");
-
+const profilesRouter = require("./routes/profile");
+const groupsRouter=require('./routes/group')
     
-app.use("/profile", profilesController);
+app.use("/profile", profilesRouter);
+app.use("/group",groupsRouter)
 
 app.use(bodyParser.json());
 

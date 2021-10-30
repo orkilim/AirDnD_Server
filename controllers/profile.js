@@ -1,7 +1,7 @@
 const Profile = require('../models/profile')
-//const jwt = require('jsonwebtoken');
-//const bcrypt = require('bcryptjs');
-//const {validationResult} = require("express-validator");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const {validationResult} = require("express-validator");
 //const date = require('date-and-time');
 
 module.exports = {
@@ -152,15 +152,16 @@ module.exports = {
         if (!errors.isEmpty())
             return res.status(400).json({ errors: errors.array() });
 
-        const { username = null, phoneNumber = null, password = null } = req.body;
+        let { name=null,password=null } = req.body;
+        name=name.toLowerCase()
         try {
-            let user = await Woman.findOne({ phoneNumber });
+            let user = await Profile.findOne({ name:name });
             if (!user)
-                return res.status(400).json({ message: "User Not Exist" });
+                res.status(500).json({ code:1, message: "User Doesn't Exist" });
 
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch)
-                return res.status(400).json({ message: "Incorrect Password !" });
+                return res.status(500).json({ code:2, message: "Incorrect Password !" });
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
@@ -170,7 +171,7 @@ module.exports = {
             );
         } catch (e) {
             console.error(e);
-            res.status(500).json({ message: "Server Error" });
+            res.status(500).json({ code:3, message: "Server Error" });
         }
     },
 

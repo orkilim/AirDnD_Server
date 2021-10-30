@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const schema = {
     name: { type: String, required: true },
-    //password: { type: String, required: true },
+    password: { type: String, required: true },
     address: { type: String, required: false },
     allergies: { type: String,required:true },
     car:{type:String,required:true},
