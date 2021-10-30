@@ -161,7 +161,7 @@ module.exports = {
 
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch)
-                return res.status(500).json({ code:2, message: "Incorrect Password !" });
+                res.status(500).json({ code:2, message: "Incorrect Password !" });
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
