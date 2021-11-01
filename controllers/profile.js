@@ -1,7 +1,7 @@
 const Profile = require('../models/profile')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {validationResult} = require("express-validator");
+const { validationResult } = require("express-validator");
 //const date = require('date-and-time');
 
 module.exports = {
@@ -71,21 +71,21 @@ module.exports = {
     },
 
     async addProfile(req, res, next) {
-        let errorArr=[]
+        let errorArr = []
         try {
             let { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
             console.log(req.body)
-            name=name.toLowerCase()
+            name = name.toLowerCase()
             errorArr.push("a")
             const profile = new Profile({ name, address, allergies, car, diet, days })
             errorArr.push("b")
             try {
                 errorArr.push("c")
-                const result = await Profile.findOne({ name:name });
+                const result = await Profile.findOne({ name: name });
                 if (result) {
-                    const myObj={
-                        code:1,
-                        msg:"user with that name already exists- change name or log to the existing"
+                    const myObj = {
+                        code: 1,
+                        msg: "user with that name already exists- change name or log to the existing"
                     }
                     res.status(200).send(myObj)
                 }
@@ -93,9 +93,9 @@ module.exports = {
                     const result = await profile.save()
                     if (result) {
                         console.log("successfully saved to DB")
-                        const myObj={
-                            code:0,
-                            msg:"saving profile or profile changes to DB successful"
+                        const myObj = {
+                            code: 0,
+                            msg: "saving profile or profile changes to DB successful"
                         }
                         res.status(200).send(myObj)
                     }
@@ -108,9 +108,8 @@ module.exports = {
 
 
         } catch (error) {
-            if (error)
-            {
-                console.log("error is: ",error)
+            if (error) {
+                console.log("error is: ", error)
                 res.status(503).send("problem with addProfile is: " + error)
             }
         }
@@ -121,23 +120,23 @@ module.exports = {
         if (!errors.isEmpty())
             return res.status(400).json({ errors: errors.array() });
 
-        const { username = null, password = null, address = null, phoneNumber = null, guards = null } = req.body;
+        let { name = null, password = null } = req.body;
+        name = name.toLowerCase()
         try {
-            const tmp = await Woman.findOne({ phoneNumber });
+            const tmp = await Profile.findOne({ name: name });
             if (tmp)
                 return res.status(400).json({ msg: "User Already Exists" });
 
-            const user = new Woman({ username, password, address, phoneNumber, guards });
+            const user = new Profile({ name, password });
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
             await user.save();
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
-                    if (err) throw err;
-                    res.status(200).json({
-                        token
-                    });
+                    if (err)
+                        throw err;
+                    res.status(200).json({ token });
                 }
             );
         } catch (err) {
@@ -152,16 +151,17 @@ module.exports = {
         if (!errors.isEmpty())
             return res.status(400).json({ errors: errors.array() });
 
-        let { name=null,password=null } = req.body;
-        name=name.toLowerCase()
+        let { name = null, password = null } = req.body;
+        name = name.toLowerCase()
         try {
-            let user = await Profile.findOne({ name:name });
+            let user = await Profile.findOne({ name: name });
             if (!user)
-                res.status(500).json({ code:1, message: "User Doesn't Exist" });
-
+                res.status(500).json({ code: 1, message: "User Doesn't Exist" });
+            console.log("user is", user)
             const isMatch = await bcrypt.compare(password, user.password);
+            console.log(user.password)
             if (!isMatch)
-                res.status(500).json({ code:2, message: "Incorrect Password !" });
+                res.status(500).json({ code: 2, message: "Incorrect Password !" });
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
@@ -171,7 +171,7 @@ module.exports = {
             );
         } catch (e) {
             console.error(e);
-            res.status(500).json({ code:3, message: "Server Error" });
+            res.status(500).json({ code: 3, message: "Server Error" });
         }
     },
 

@@ -5,11 +5,11 @@ const mongoose = require('mongoose');
 const schema = {
     name: { type: String, required: true },
     password: { type: String, required: true },
-    address: { type: String, required: false },
-    allergies: { type: String,required:true },
-    car:{type:String,required:true},
-    diet:{type:String,required:true},
-    days:{type:[Boolean]}
+    address: { type: String, required: false,default:"israel" },
+    allergies: { type: String,required:true,default:"none" },
+    car:{type:String,required:true,default:"don't own"},
+    diet:{type:String,required:true,default:"omnivore"},
+    days:{type:[Boolean],required:true,default:[false,false,false,false,false,true,true]}
 }
 
 

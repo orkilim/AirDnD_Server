@@ -8,7 +8,7 @@ router.post('/add', profilesController.addProfile);
 //router.get('/getguards', womanController.getGuardsFromDB);
 router.get('/getAll', profilesController.getAll);
 
-//router.post('/signup', womanController.signup);
+router.post('/signup', profilesController.signup);
 router.post('/login', profilesController.login);
 
 
