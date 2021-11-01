@@ -157,7 +157,7 @@ module.exports = {
             let user = await Profile.findOne({ name: name });
             if (!user)
                 res.status(500).json({ code: 1, message: "User Doesn't Exist" });
-            console.log("user is", user)
+            console.log("user is", JSON.stringify(user))
             const isMatch = await bcrypt.compare(password, user.password);
             console.log(user.password)
             if (!isMatch)
