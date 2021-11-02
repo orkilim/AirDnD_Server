@@ -124,8 +124,13 @@ module.exports = {
         name = name.toLowerCase()
         try {
             const tmp = await Profile.findOne({ name: name });
-            if (tmp)
-                return res.status(500).send({ msg: "User Already Exists" });
+            if (tmp) {
+                const myObj={
+                    code:1,
+                    msg:"User Already Exists"
+                }
+                res.status(500).json(myObj);
+            }
 
             const user = new Profile({ name, password });
             const salt = await bcrypt.genSalt(10);
