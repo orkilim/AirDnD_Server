@@ -54,13 +54,25 @@ module.exports = {
         }
     },
 
-    async getAll(req, res, next) {
-
+    async getUser(req, res, next) {
+        const user=req.query.name
         try {
-            const result = await Profile.find()
+            const result = await Profile.find({name:user})
             if (result) {
                 console.log("everything's good")
-                res.status(200).send(JSON.stringify(result))
+                const temp={
+                    code:0,
+                    user:result
+                }
+                return res.status(200).json(temp)
+            }
+            else{
+                console.log("user doesn't exist")
+                const temp={
+                    code:1,
+                    msg:"user doesn't exist"
+                }
+                return res.status(200).json(temp)
             }
         } catch (error) {
             if (error) {

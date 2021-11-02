@@ -6,7 +6,7 @@ const profilesController = require('../controllers/profile');
 router.put('/update', profilesController.updateProfile);
 //router.put('/update', womanController.UpdateWoman);
 //router.get('/getguards', womanController.getGuardsFromDB);
-router.get('/getAll', profilesController.getAll);
+router.get('/get', profilesController.getUser);
 
 router.post('/signup', profilesController.signup);
 router.post('/login', profilesController.login);
