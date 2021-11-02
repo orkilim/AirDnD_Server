@@ -125,7 +125,7 @@ module.exports = {
         try {
             const tmp = await Profile.findOne({ name: name });
             if (tmp)
-                return res.status(400).send({ "msg": "User Already Exists" });
+                return res.status(500).send({ msg: "User Already Exists" });
 
             const user = new Profile({ name, password });
             const salt = await bcrypt.genSalt(10);
@@ -141,7 +141,7 @@ module.exports = {
             );
         } catch (err) {
             console.log(err.message);
-            res.status(500).send("Error in Saving");
+            res.status(501).send("Error in Saving");
         }
     },
 
@@ -156,12 +156,12 @@ module.exports = {
         try {
             let user = await Profile.findOne({ name: name });
             if (!user)
-                res.status(500).json({ code: 1, message: "User Doesn't Exist" });
+                res.status(500).send({ code: 1, message: "User Doesn't Exist" });
             console.log("user is", JSON.stringify(user))
             const isMatch = await bcrypt.compare(password, user.password);
             console.log(user.password)
             if (!isMatch)
-                res.status(500).json({ code: 2, message: "Incorrect Password !" });
+                res.status(500).send({ code: 2, message: "Incorrect Password !" });
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
@@ -171,7 +171,7 @@ module.exports = {
             );
         } catch (e) {
             console.error(e);
-            res.status(500).json({ code: 3, message: "Server Error" });
+            res.status(500).send({ code: 3, message: "Server Error" });
         }
     },
 
