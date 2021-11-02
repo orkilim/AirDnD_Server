@@ -125,7 +125,7 @@ module.exports = {
         try {
             const tmp = await Profile.findOne({ name: name });
             if (tmp)
-                return res.status(400).send("User Already Exists");
+                return res.status(400).send({ "msg": "User Already Exists" });
 
             const user = new Profile({ name, password });
             const salt = await bcrypt.genSalt(10);
