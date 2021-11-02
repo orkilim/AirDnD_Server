@@ -70,40 +70,37 @@ module.exports = {
 
     },
 
-    async addProfile(req, res, next) {
-        let errorArr = []
+    async updateProfile(req, res, next) {
+        
         try {
-            let { name, address = "", allergies = "none", car, diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
+            let { name,prevName, address = "", allergies = "none", car="don't own", diet = "omnivore", days = [false, false, false, false, false, true, true] } = req.body
             console.log(req.body)
-            name = name.toLowerCase()
-            errorArr.push("a")
-            const profile = new Profile({ name, address, allergies, car, diet, days })
-            errorArr.push("b")
+            name = name.toLowerCase()    
+            //const profile = new Profile({ name, address, allergies, car, diet, days })
             try {
-                errorArr.push("c")
-                /*const result = await Profile.findOne({ name: name });
-                if (result) {
+                const profile = await Profile.findOne({ name: prevName });
+                if (!profile) {
                     const myObj = {
                         code: 1,
-                        msg: "user with that name already exists- change name or log to the existing"
+                        msg: "user does not exist"
                     }
-                    res.status(200).send(myObj)
-                }*/
-
-                const result = await profile.save()
+                    return res.status(501).json(myObj)
+                }
+                
+                const result = await Profile.findOneAndUpdate({name:prevName},{name:name,address:address,allergies:allergies,car:car,diet:diet,days:days})
                 if (result) {
                     console.log("successfully saved to DB")
                     const myObj = {
                         code: 0,
                         msg: "saving profile or profile changes to DB successful"
                     }
-                    res.status(200).send(myObj)
+                    return res.status(200).send(myObj)
                 }
 
 
             } catch (error) {
                 if (error)
-                    res.status(501).json({ code: 1, msg: "problem with findOne of mongoose in addProfile is: " + error })
+                    return res.status(501).json({ code: 1, msg: "problem with findOne of mongoose in addProfile is: " + error })
             }
 
 

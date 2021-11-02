@@ -3,7 +3,7 @@ const router = express.Router();
 const profilesController = require('../controllers/profile');
 //const auth = require("../middleware/auth");
 
-router.post('/add', profilesController.addProfile);
+router.put('/update', profilesController.updateProfile);
 //router.put('/update', womanController.UpdateWoman);
 //router.get('/getguards', womanController.getGuardsFromDB);
 router.get('/getAll', profilesController.getAll);
