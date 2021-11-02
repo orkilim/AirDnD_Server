@@ -129,8 +129,7 @@ module.exports = {
                     code: 1,
                     msg: "User Already Exists"
                 }
-                res.status(500).json(myObj);
-                return;
+                return res.status(500).json(myObj);
             }
 
             const user = new Profile({ name, password });
