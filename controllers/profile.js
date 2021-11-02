@@ -64,7 +64,7 @@ module.exports = {
             }
         } catch (error) {
             if (error) {
-                res.status(501).send("problem with getAll is: " + error)
+                res.status(500).json({ code: 1, msg: "problem with getAll is: " + error })
             }
         }
 
@@ -81,29 +81,29 @@ module.exports = {
             errorArr.push("b")
             try {
                 errorArr.push("c")
-                const result = await Profile.findOne({ name: name });
+                /*const result = await Profile.findOne({ name: name });
                 if (result) {
                     const myObj = {
                         code: 1,
                         msg: "user with that name already exists- change name or log to the existing"
                     }
                     res.status(200).send(myObj)
-                }
-                else {
-                    const result = await profile.save()
-                    if (result) {
-                        console.log("successfully saved to DB")
-                        const myObj = {
-                            code: 0,
-                            msg: "saving profile or profile changes to DB successful"
-                        }
-                        res.status(200).send(myObj)
+                }*/
+
+                const result = await profile.save()
+                if (result) {
+                    console.log("successfully saved to DB")
+                    const myObj = {
+                        code: 0,
+                        msg: "saving profile or profile changes to DB successful"
                     }
+                    res.status(200).send(myObj)
                 }
+
 
             } catch (error) {
                 if (error)
-                    res.status(502).send("problem with findOne of mongoose in addProfile is: " + error)
+                    res.status(501).json({ code: 1, msg: "problem with findOne of mongoose in addProfile is: " + error })
             }
 
 
@@ -125,9 +125,9 @@ module.exports = {
         try {
             const tmp = await Profile.findOne({ name: name });
             if (tmp) {
-                const myObj={
-                    code:1,
-                    msg:"User Already Exists"
+                const myObj = {
+                    code: 1,
+                    msg: "User Already Exists"
                 }
                 res.status(500).json(myObj);
             }
@@ -146,7 +146,7 @@ module.exports = {
             );
         } catch (err) {
             console.log(err.message);
-            res.status(501).send("Error in Saving");
+            res.status(501).json({ code: 2, msg: "Error in saving, try again" });
         }
     },
 
@@ -161,12 +161,12 @@ module.exports = {
         try {
             let user = await Profile.findOne({ name: name });
             if (!user)
-                res.status(500).send({ code: 1, message: "User Doesn't Exist" });
+                res.status(502).json({ code: 1, message: "User Doesn't Exist" });
             console.log("user is", JSON.stringify(user))
             const isMatch = await bcrypt.compare(password, user.password);
             console.log(user.password)
             if (!isMatch)
-                res.status(500).send({ code: 2, message: "Incorrect Password !" });
+                res.status(502).send({ code: 2, message: "Incorrect Password !" });
 
             jwt.sign({ user: { id: user.id } }, "randomString",
                 (err, token) => {
@@ -176,7 +176,7 @@ module.exports = {
             );
         } catch (e) {
             console.error(e);
-            res.status(500).send({ code: 3, message: "Server Error" });
+            res.status(502).send({ code: 3, message: "Server Error" });
         }
     },
 
