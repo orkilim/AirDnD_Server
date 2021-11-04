@@ -12,11 +12,20 @@ module.exports = {
             const result = await Profile.find({ name: req.body.name })
             if (result) {
                 console.log("everything's good")
-                const myObj = {
-                    code: 0,
-                    groups: result.groups
+                if (result.groups == []) {
+                    const myObj = {
+                        code: 0,
+                        msg: "no groups for this user yet"
+                    }
+                    return res.status(200).json(myObj)
                 }
-                return res.status(200).json(myObj)
+                else {
+                    const myObj = {
+                        code: 0,
+                        groups: result.groups
+                    }
+                    return res.status(200).json(myObj)
+                }
             }
         } catch (error) {
             if (error) {
@@ -50,7 +59,7 @@ module.exports = {
                     await user.save()
                 }
             }
-            return res.status(200).json({code:0,msg:"group successfully created"})
+            return res.status(200).json({ code: 0, msg: "group successfully created" })
 
             console.log("new group created successfully")
             return res.status(200).json({ code: 3, msg: "new group created successfully" })
