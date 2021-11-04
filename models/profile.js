@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//const Guard = require('./guard')
+const Group = require('./group')
 //mongoose.set('useFindAndModify', false);
 
 const schema = {
@@ -9,7 +9,8 @@ const schema = {
     allergies: { type: String,required:true,default:"none" },
     car:{type:String,required:true,default:"don't own"},
     diet:{type:String,required:true,default:"omnivore"},
-    days:{type:[Boolean],required:true,default:[false,false,false,false,false,true,true]}
+    days:{type:[Boolean],required:true,default:[false,false,false,false,false,true,true]},
+    groups:{type:[Group],required:true,default:[]}
 }
 
 
