@@ -9,12 +9,12 @@ module.exports = {
     async getAll(req, res, next) {
 
         try {
-            const result = await Group.find({ name: req.body.name })
+            const result = await Profile.find({ name: req.body.name })
             if (result) {
                 console.log("everything's good")
                 const myObj = {
                     code: 0,
-                    groups: result
+                    groups: result.groups
                 }
                 return res.status(200).json(myObj)
             }
