@@ -14,7 +14,7 @@ module.exports = {
                 console.log("everything's good")
                 if (result.groups == []) {
                     const myObj = {
-                        code: 0,
+                        code: 1,
                         msg: "no groups for this user yet"
                     }
                     return res.status(200).json(myObj)
