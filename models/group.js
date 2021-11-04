@@ -5,7 +5,7 @@ const Profile=require('./profile')
 const schema = {
     group_name: { type: String, required: true },
     //password: { type: String, required: true },
-    people:{type:[Profile.schema]}
+    people:{type:[Profile]}
 }
 
 
