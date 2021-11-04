@@ -3,9 +3,9 @@ const Profile=require('./profile')
 //mongoose.set('useFindAndModify', false);
 
 const schema = {
-    group_name: { type: String, required: true },
+    name: { type: String, required: true },
     //password: { type: String, required: true },
-    people:{type:[Profile.schema]}
+    people:{type:[String]}
 }
 
 

@@ -27,14 +27,14 @@ module.exports = {
         try {
             const name=req.body.name
             const peopleInGroup=req.body.people
-            const group=await Group.findOne({name:name})
-            if(group)
+            const result=await Group.findOne({name:name})
+            if(result)
             {
                 console.log("group already exists")
                 return res.status(200).json({code:2,msg:"group already exists"})
             }
-            group.save()
-            
+            const group=new Group({name:name,people:peopleInGroup})
+            await group.save()
             console.log("new group created successfully")
             return res.status(200).json({code:3,msg:"new group created successfully"})
         } catch (error) {
