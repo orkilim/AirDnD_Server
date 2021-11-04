@@ -9,10 +9,12 @@ module.exports = {
     async getAll(req, res, next) {
 
         try {
-            const result = await Profile.find({ name: req.body.name })
+            const result = await Profile.findOne({ name: req.query.name })
             if (result) {
                 console.log("everything's good")
+                console.log(result)
                 if (result.groups == []) {
+                    console.log("inside")
                     const myObj = {
                         code: 1,
                         msg: "no groups for this user yet"
